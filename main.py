@@ -20,7 +20,7 @@ def get_events(calendar_id='primary', time_min=None, time_max=None):
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file('creds.json', SCOPES)
             creds = flow.run_local_server(port=8000)
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
@@ -55,7 +55,7 @@ def get_tasks():
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            flow = InstalledAppFlow.from_client_secrets_file('credentials.json', SCOPES)
+            flow = InstalledAppFlow.from_client_secrets_file('creds.json', SCOPES)
             creds = flow.run_local_server(port=8000)
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
