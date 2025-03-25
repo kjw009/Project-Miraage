@@ -76,7 +76,7 @@ class Grayfia:
             return []
 
 
-    def get_task_lists(self): # renamed to get_task_lists
+    def get_tasks(self): # renamed to get_task_lists
         """
         Retrieves task lists from Google Tasks.
 
