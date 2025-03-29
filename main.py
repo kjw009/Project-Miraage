@@ -6,18 +6,13 @@ if __name__ == "__main__":
 
     if grayfia.creds:
         events = grayfia.get_events()
-        task_lists = grayfia.get_tasks()
+        all_tasks = grayfia.get_tasks()
 
-        if events:
-            print("---Events---")
-            for event in events:
-                start = event['start'].get('dateTime', event['start'].get('date'))
-                print(f"Event: {event['summary']}, Start: {start}")
-        
-        if task_lists:
-            print("---Task Lists---")
-            for task_list in task_lists:
-                print(f"Title: {task_list.get('title')}")
-    
+        for task in all_tasks:
+            print("---Tasks---")
+            tasklist  =  task.get('task_list_title')
+            task_name = task.get('title')
+            print(f"Tasklist: {tasklist}\n Task Name: {task_name}")
+            
     else:
         print("Authentication Failed")

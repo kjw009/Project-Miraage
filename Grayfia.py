@@ -76,21 +76,44 @@ class Grayfia:
             return []
 
 
-    def get_tasks(self): # renamed to get_task_lists
+    def get_tasks(self):
         """
-        Retrieves task lists from Google Tasks.
+        Retrieves all tasks from all task lists in Google Tasks, along with their associated task list.
+
+        Args:
+            creds (Credentials): The user's Google API credentials.
 
         Returns:
-            list: A list of task list dictionaries, or an empty list if no task lists are found or an error occurs.
+            list: A list of dictionaries, where each dictionary represents a task and includes the task details
+                and the title of the task list it belongs to.
         """
         try:
             service = build('tasks', 'v1', credentials=self.creds)
-            results = service.tasklists().list().execute()
-            task_lists = results.get('items', []) # renamed to task_lists
+            all_tasks = []
+
+            # 1. Get all task lists
+            task_lists_result = service.tasklists().list().execute()
+            task_lists = task_lists_result.get('items', [])
+
             if not task_lists:
                 print('No task lists found.')
                 return []
-            return task_lists
+
+            # 2. Iterate through each task list and get its tasks
+            for task_list in task_lists:
+                task_list_id = task_list['id']
+                task_list_title = task_list['title']
+
+                tasks_result = service.tasks().list(tasklist=task_list_id).execute()
+                tasks = tasks_result.get('items', [])
+
+                if tasks:
+                    for task in tasks:
+                        task['task_list_title'] = task_list_title  # Add task list title to task info
+                        all_tasks.append(task)
+
+            return all_tasks
+
         except Exception as e:
-            print(e)
+            print(f"An error occurred: {e}")
             return []
