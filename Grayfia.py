@@ -34,6 +34,7 @@ class Grayfia:
         creds = None
         if os.path.exists('token.json'):
             creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+
         if not creds or not creds.valid:
             if creds and creds.expired and creds.refresh_token:
                 creds.refresh(Request())
@@ -42,6 +43,7 @@ class Grayfia:
                 creds = flow.run_local_server(port=8000)
             with open('token.json', 'w') as token:
                 token.write(creds.to_json())
+        # Return       
         return creds
     
     def get_events(self, calendar_id='primary', time_min=None, time_max=None):
